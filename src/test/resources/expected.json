@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "name": "Vlad",
+  "surname": "Dmitrov",
+  "email": "igoridze@gmail.com",
+  "uri_image": "http://some_path",
+  "timestamp": "2012-04-23T15:25:43.000+00:00",
+  "active": true
+}

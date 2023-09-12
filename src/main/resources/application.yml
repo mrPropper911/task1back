@@ -1,0 +1,25 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/test1backendproject
+    username: root
+    password: qwer4321
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+  sql:
+    init:
+      mode: always
+      continue-on-error: false
+server:
+  port: 8080
+
+path:
+  server: D://CodeProgram/Task1BackEndProject/user-photo/
+
+
