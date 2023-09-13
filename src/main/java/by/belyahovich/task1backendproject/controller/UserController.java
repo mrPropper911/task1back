@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.sql.Timestamp;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -42,5 +44,21 @@ public class UserController {
                 .buildAndExpand(savedUserDTO.getId())
                 .toUri();
         return ResponseEntity.created(locationOfNewUser).build();
+    }
+
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    @GetMapping("/server-stat")
+    public ResponseEntity<List<UserDTO>> getServerStatistic(@RequestParam(required = false) Boolean activity,
+                                                   @RequestParam(required = false) Long id){
+        if(id != null){
+            Timestamp timestamp = new Timestamp(id);
+            if (activity != null){
+                return ResponseEntity.ok(userService.findByActivityStatusTimestampAfter(activity, timestamp));
+            }
+            return ResponseEntity.ok(userService.findByTimestampAfter(timestamp));
+        } else if (activity != null){
+            return ResponseEntity.ok(userService.findByActivity(activity));
+        }
+        return ResponseEntity.ok(userService.findAll());
     }
 }
