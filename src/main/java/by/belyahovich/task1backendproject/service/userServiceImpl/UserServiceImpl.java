@@ -12,8 +12,11 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @Log4j
@@ -76,5 +79,33 @@ public class UserServiceImpl implements UserService {
         }
 
         return new StatusResponse(updatedUserFromBD.getId(), previousActivity, updatedUserFromBD.isActive());
+    }
+
+    @Override
+    public List<UserDTO> findByActivityStatusTimestampAfter(Boolean activity, Timestamp timestamp) {
+        return StreamSupport.stream(userRepositoryCrud.findByActiveAndTimestampAfter(activity, timestamp).spliterator(),false)
+                .map(userDTOMapper)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDTO> findByTimestampAfter(Timestamp timestamp) {
+        return StreamSupport.stream(userRepositoryCrud.findByTimestampAfter(timestamp).spliterator(),false)
+                .map(userDTOMapper)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDTO> findByActivity(Boolean activity) {
+        return StreamSupport.stream(userRepositoryCrud.findByActive(activity).spliterator(),false)
+                .map(userDTOMapper)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDTO> findAll() {
+        return StreamSupport.stream(userRepositoryCrud.findAll().spliterator(), false)
+                .map(userDTOMapper)
+                .collect(Collectors.toList());
     }
 }
